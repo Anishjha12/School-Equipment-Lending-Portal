@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(STUDENT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  requests  BorrowRequest[]
+}
+
+model Equipment {
+  id          Int       @id @default(autoincrement())
+  name        String
+  category    String
+  condition   String
+  quantity    Int
+  available   Boolean   @default(true)
+  description String?
+  imageUrl    String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  requests    BorrowRequest[]
+}
+
+model BorrowRequest {
+  id          Int            @id @default(autoincrement())
+  userId      Int
+  equipmentId Int
+  requestDate DateTime       @default(now())
+  startDate   DateTime
+  endDate     DateTime
+  status      RequestStatus  @default(PENDING)
+  purpose     String
+  returnedAt  DateTime?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  
+  user        User           @relation(fields: [userId], references: [id])
+  equipment   Equipment      @relation(fields: [equipmentId], references: [id])
+}
+
+enum Role {
+  STUDENT
+  STAFF
+  ADMIN
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  RETURNED
+}
