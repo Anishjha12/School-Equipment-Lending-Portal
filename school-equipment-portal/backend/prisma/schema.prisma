@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url      = "file:./dev.db"  // Direct URL instead of env variable
 }
 
 model User {
@@ -12,13 +12,11 @@ model User {
   email     String   @unique
   password  String
   name      String
-  role      String   @default("STUDENT")  // Changed from enum to String
+  role      String   @default("STUDENT")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   
   requests  BorrowRequest[]
-
-  @@map("users")
 }
 
 model Equipment {
@@ -34,8 +32,6 @@ model Equipment {
   updatedAt   DateTime  @updatedAt
   
   requests    BorrowRequest[]
-
-  @@map("equipment")
 }
 
 model BorrowRequest {
@@ -45,7 +41,7 @@ model BorrowRequest {
   requestDate DateTime @default(now())
   startDate   DateTime
   endDate     DateTime
-  status      String   @default("PENDING")  // Changed from enum to String
+  status      String   @default("PENDING")
   purpose     String
   returnedAt  DateTime?
   createdAt   DateTime @default(now())
@@ -53,6 +49,4 @@ model BorrowRequest {
   
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   equipment   Equipment @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
-
-  @@map("borrow_requests")
 }

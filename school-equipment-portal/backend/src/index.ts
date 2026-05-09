@@ -3,8 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth';
 import equipmentRoutes from './routes/equipment';
-// @ts-ignore
-import requestRoutes from './routes/requests'; 
+import requestRoutes from './routes/request';
 import userRoutes from './routes/users';
 
 dotenv.config();

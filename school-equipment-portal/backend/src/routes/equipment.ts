@@ -69,7 +69,7 @@ router.post('/',
     body('quantity').isInt({ min: 1 }),
     body('description').optional()
   ],
-  async (req: any, res:any) => {
+  async (req:any, res:any) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
